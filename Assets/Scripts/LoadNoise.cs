@@ -26,25 +26,7 @@ namespace Night
 	            }
 	        }
 	*/
-			SimplexNoise.Initialize();
 			
-			int xx,yy,zz;
-	        for (int x = 0; x < sizeX; x++) {
-	            //float[] row = grid[x];
-	            for (int z = 0; z < sizeZ; z++) {
-	                //int blockHeight = (int)newGrid[x][z];
-	                
-	               // for (int y = 0; y < blockHeight-2; y++) {
-	                for (int y = 0; y < sizeY; y++) {
-	                    xx = locX + x;
-						yy = locY + y;
-						zz = locZ + z;
-	                    source.setVolumeGridValue(xx, yy, zz, SimplexNoise.octave_noise_3d(3,0.05f,0.025f,xx,yy,zz));//locX(float)blockHeight - (float)y));
-	                    
-	                }
-	                
-	            }
-	        }
 	    }
 	}
 }

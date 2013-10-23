@@ -27,7 +27,7 @@ namespace Night
 		/// The texture depth.
 		
 		
-		public FloatGridSource(Vector3 scale, int width, int height, int depth, float maxClampedAbsoluteDensity)
+		public FloatGridSource(Vector3 pos, Vector3 scale, int width, int height, int depth, float maxClampedAbsoluteDensity)
 		{
 		    this.maxClampedAbsoluteDensity=maxClampedAbsoluteDensity;
 		    this.scale=scale;
@@ -37,11 +37,31 @@ namespace Night
 		    this.height=height;
 		    this.depth=depth;
 		    
+			SimplexNoise.Initialize();
+			
+			int xx,yy,zz;
+	        for (int x = 0; x < width; x++) {
+	            //float[] row = grid[x];
+	            for (int z = 0; z < depth; z++) {
+	                //int blockHeight = (int)newGrid[x][z];
+	                
+	               // for (int y = 0; y < blockHeight-2; y++) {
+	                for (int y = 0; y < height; y++) {
+	                    xx = (int)pos.x + x;
+						yy = (int)pos.y + y;
+						zz = (int)pos.z + z;
+	                    data[x,y,z] = SimplexNoise.octave_noise_3d(3,0.05f,0.025f,xx,yy,zz);//locX(float)blockHeight - (float)y));
+	                    
+	                }
+	                
+	            }
+	        }
+			/*
 		    for(int x=0;x<width;x++)
 		       for(int y=0;y<height;y++)
 		           for(int z=0;z<depth;z++)
 		               data[x,y,z] = -1;
-		    
+		    */
 		}
 		
 		public void setVolumeGridValue(int x, int y, int z, float value) {

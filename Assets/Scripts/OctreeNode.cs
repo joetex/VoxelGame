@@ -21,13 +21,48 @@ namespace Night
 	    
 	    private bool subdivided=false;
 	
+		private float length;
+		
+		private Vector3 vBack, vFront, vLeft, vRight, vTop, vBottom;
+		private Vector3 vBackTop, vBackBottom, vFrontTop, vFrontBottom;
+		private Vector3 vLeftTop, vLeftBottom, vRightTop, vRightBottom;
+		private Vector3 vBackLeft, vBackRight, vFrontLeft, vFrontRight;
+		
+		
+		
 	    public OctreeNode(Vector3 from, Vector3 to) {
 	        this.from = from;
 	        this.to = to;
 	        this.center = (from + to) / 2;
-	        
+	        this.length = Vector3.Distance(from,to);
 	        centerGradient = Vector3.zero;
 	        centerValue = 0;
+			 
+			
+			float vCenterX = this.center.x;//from.x + (to.x - from.x) / 2.0f;
+			float vCenterY = this.center.y;//from.y + (to.y - from.y) / 2.0f;
+			float vCenterZ = this.center.z;//from.z + (to.z - from.z) / 2.0f;
+			
+			this.vBack = new Vector3(vCenterX, vCenterY, from.z);
+			this.vFront = new Vector3(vCenterX, vCenterY, to.z);
+			this.vLeft = new Vector3(from.x, vCenterY, vCenterZ);
+			this.vRight = new Vector3(to.x, vCenterY, vCenterZ);
+			this.vTop = new Vector3(vCenterX, to.y, vCenterZ);
+			this.vBottom = new Vector3(vCenterX, from.y, vCenterZ);
+			this.vBackTop = new Vector3(vCenterX, to.y, from.z);
+			this.vBackBottom = new Vector3(vCenterX, from.y, from.z);
+			this.vFrontTop = new Vector3(vCenterX, to.y, to.z);
+			this.vFrontBottom = new Vector3(vCenterX, from.y, to.z);
+			this.vLeftTop = new Vector3(from.x, to.y, vCenterZ);
+			this.vLeftBottom = new Vector3(from.x, from.y, vCenterZ);
+			this.vRightTop = new Vector3(to.x, to.y, vCenterZ);
+			this.vRightBottom = new Vector3(to.x, from.y, vCenterZ);
+			this.vBackLeft = new Vector3(from.x, vCenterY, from.z);
+			this.vFrontLeft = new Vector3(from.x, vCenterY, to.z);
+			this.vBackRight = new Vector3(to.x, vCenterY, from.z);
+			this.vFrontRight = new Vector3(to.x, vCenterY, to.z);
+	  
+			
 	    }
 	
 	    public void split(OctreeNodeSplitPolicy splitPolicy, VolumeSource source, float geometricError) {
@@ -187,7 +222,7 @@ namespace Night
 	        float diffZ = to.z-from.z;
 	        return Math.abs(centerValue) < Math.sqrt(diffX*diffX +diffY*diffY + diffZ*diffZ) * NEAR_FACTOR;*/
 	        
-	        return Math.Abs(centerValue) < Vector3.Distance(from,to) * NEAR_FACTOR;
+	        return Math.Abs(centerValue) < this.length * NEAR_FACTOR;
 	    }
 	
 	    public bool isBorderLeft(OctreeNode root) {
@@ -215,85 +250,77 @@ namespace Night
 	    }
 	    
 	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	     public Vector3 getCenterBack() {
-	     return new Vector3(from.x + (to.x - from.x) / 2.0f, from.y + (to.y - from.y) / 2.0f, from.z);
-	     }
-	
-	     public Vector3 getCenterFront() {
-	     return new Vector3(from.x + (to.x - from.x) / 2.0f, from.y + (to.y - from.y) / 2.0f, to.z);
-	     }
-	
-	     public Vector3 getCenterLeft() {
-	     return new Vector3(from.x, from.y + (to.y - from.y) / 2.0f, from.z + (to.z - from.z) / 2.0f);
-	     }
-	
-	     public Vector3 getCenterRight() {
-	     return new Vector3(to.x, from.y + (to.y - from.y) / 2.0f, from.z + (to.z - from.z) / 2.0f);
-	     }
-	
-	     public Vector3 getCenterTop() {
-	     return new Vector3(from.x + (to.x - from.x) / 2.0f, to.y, from.z + (to.z - from.z) / 2.0f);
-	     }
-	
-	     public Vector3 getCenterBottom() {
-	     return new Vector3(from.x + (to.x - from.x) / 2.0f, from.y, from.z + (to.z - from.z) / 2.0f);
-	     }
-	
-	     public Vector3 getCenterBackTop() {
-	     return new Vector3(from.x + (to.x - from.x) / 2.0f, to.y, from.z);
-	     }
-	
-	     public Vector3 getCenterBackBottom() {
-	     return new Vector3(from.x + (to.x - from.x) / 2.0f, from.y, from.z);
-	     }
-	
-	     public Vector3 getCenterFrontTop() {
-	     return new Vector3(from.x + (to.x - from.x) / 2.0f, to.y, to.z);
-	     }
-	
-	     public Vector3 getCenterFrontBottom() {
-	     return new Vector3(from.x + (to.x - from.x) / 2.0f, from.y, to.z);
-	     }
-	     
-	      public Vector3 getCenterLeftTop() {
-	     return new Vector3(from.x, to.y, from.z + (to.z - from.z) / 2.0f);
-	     }
-	      
-	     public Vector3 getCenterLeftBottom() {
-	     return new Vector3(from.x, from.y, from.z + (to.z - from.z) / 2.0f);
-	     }
-	     
-	     public Vector3 getCenterRightTop() {
-	     return new Vector3(to.x, to.y, from.z + (to.z - from.z) / 2.0f);
-	     }
-	     
-	     public Vector3 getCenterRightBottom() {
-	     return new Vector3(to.x, from.y, from.z + (to.z - from.z) / 2.0f);
-	     }
-	     
-	    public Vector3 getCenterBackLeft() {
-	     return new Vector3(from.x, from.y + (to.y - from.y) / 2.0f, from.z);
-	     }
-	    
-	     public Vector3 getCenterFrontLeft() {
-	     return new Vector3(from.x, from.y + (to.y - from.y) / 2.0f, to.z);
-	     }
-	     
-	    public Vector3 getCenterBackRight() {
-	     return new Vector3(to.x, from.y + (to.y - from.y) / 2.0f, from.z);
-	     }
-	    
-	    public Vector3 getCenterFrontRight() {
-	     return new Vector3(to.x, from.y + (to.y - from.y) / 2.0f, to.z);
-	     }
+		public Vector3 getCenterBack() {
+			return vBack;
+		}
+		
+		public Vector3 getCenterFront() {
+			return vFront;
+		}
+		
+		public Vector3 getCenterLeft() {
+			return vLeft;
+		}
+		
+		public Vector3 getCenterRight() {
+			return vRight;
+		}
+		
+		public Vector3 getCenterTop() {
+			return vTop;
+		}
+		
+		public Vector3 getCenterBottom() {
+			return vBottom;
+		}
+		
+		public Vector3 getCenterBackTop() {
+			return vBackTop;
+		}
+		
+		public Vector3 getCenterBackBottom() {
+			return vBackBottom;
+		}
+		
+		public Vector3 getCenterFrontTop() {
+			return vFrontTop;
+		}
+		
+		public Vector3 getCenterFrontBottom() {
+			return vFrontBottom;
+		}
+		
+		public Vector3 getCenterLeftTop() {
+			return vLeftTop;
+		}
+		
+		public Vector3 getCenterLeftBottom() {
+			return vLeftBottom;
+		}
+		
+		public Vector3 getCenterRightTop() {
+			return vRightTop;
+		}
+		
+		public Vector3 getCenterRightBottom() {
+			return vRightBottom;
+		}
+		
+		public Vector3 getCenterBackLeft() {
+			return vBackLeft;
+		}
+		
+		public Vector3 getCenterFrontLeft() {
+			return vFrontLeft;
+		}
+		
+		public Vector3 getCenterBackRight() {
+			return vBackRight;
+		}
+		
+		public Vector3 getCenterFrontRight() {
+			return vFrontRight;
+		}
 	}
 
 }

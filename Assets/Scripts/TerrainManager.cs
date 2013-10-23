@@ -17,8 +17,8 @@ public class TerrainManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		SimplexNoise.Initialize();
-		FloatGridSource source = new FloatGridSource(new Vector3(1f, 1f, 1f), 32, 16, 32, 1);
-        LoadNoise.loadNoise(0, 0, 0, 32, 16, 32, 1f, (FloatGridSource)source);
+		FloatGridSource source = new FloatGridSource(Vector3.zero, new Vector3(64f, 64f, 64f), 512, 512, 512, 1);
+        //LoadNoise.loadNoise(0, 0, 0, 128, 16, 128, 1f, (FloatGridSource)source);
 
         //rootNode.attachChild(terrainNode);
         //NoiseSource source = new NoiseSource(new Vector3(0.5f, 0.5f, 0.5f), 256, 128, 256, 0);
@@ -37,7 +37,7 @@ public class TerrainManager : MonoBehaviour {
          parameter.createGeometryFromLevel = 1;
          parameter.errorMultiplicator=0.9f;
          parameter.maxScreenSpaceError = 30;
-         parameter.scale = 1;
+         parameter.scale = 64;
          parameter.skirtFactor = 0.7f;
          parameter.updateFrom = Vector3.zero;
          parameter.updateTo = Vector3.zero;
@@ -46,7 +46,7 @@ public class TerrainManager : MonoBehaviour {
          parameter.updateRadius = -1;
          
          rootChunk = new Chunk();
-         rootChunk.load(Vector3.zero, new Vector3(source.getWidth(),source.getHeight(),source.getDepth()), 1, parameter);
+         rootChunk.load(Vector3.zero, new Vector3(512,512,512), 1, parameter);
          //stateManager.attach(new ChunkAppState(chunk));
 	}
 	

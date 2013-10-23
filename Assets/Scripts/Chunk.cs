@@ -193,6 +193,7 @@ namespace Night
 	    }
 	
 	    private void prepareGeometry(ChunkRequest cr) {
+			//FloatGridSource source = new FloatGridSource(Vector3.zero, new Vector3(1f, 1f, 1f), 128, 32, 128, 1);
 	        OctreeNodeSplitPolicy policy = new OctreeNodeSplitPolicy(cr.parameter.source, cr.parameter.errorMultiplicator * cr.parameter.baseError);
 	        error = (float) cr.level * cr.parameter.errorMultiplicator * cr.parameter.baseError;
 	        cr.root.split(policy, cr.parameter.source, error);
